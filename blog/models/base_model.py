@@ -84,12 +84,13 @@ class BaseModel(models.Model):
         return cls.objects.filter(id__in=[uuid4(id) for id in ids])
 
     @classmethod
-    def save(cls):
+    def save(cls, **kwargs):
         """
         Saves the object in the database
         """
+        obj = cls.objects.create(**kwargs)
+        return obj
 
-        cls.save()
 
     @classmethod
     def delete(cls):
