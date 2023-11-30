@@ -89,7 +89,7 @@ class BaseModel(models.Model):
         Saves the object in the database
         """
 
-        cls.objects.save()
+        cls.save()
 
     @classmethod
     def delete(cls):

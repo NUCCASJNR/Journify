@@ -5,6 +5,7 @@ Post model
 
 from .base_model import BaseModel, models
 from .user import User
+from .category import Category
 
 
 class BlogPosts(BaseModel):
@@ -20,6 +21,7 @@ class BlogPosts(BaseModel):
     content = models.TextField()
     sub_title = models.CharField(max_length=50)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    categories = models.ManyToManyField(Category, related_name='posts')
 
     class Meta:
         db_table = 'blog_posts'
