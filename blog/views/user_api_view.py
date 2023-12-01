@@ -20,7 +20,7 @@ class UserListView(APIView):
         GET request handler
         """
         users = User.get_all()
-        users_list = [user.to_dict for user in users]
+        users_list = [user.to_dict(user) for user in users]
         return JsonResponse(users_list, safe=False)
 
     def post(self, request):
@@ -34,7 +34,7 @@ class UserListView(APIView):
                 return JsonResponse({"error": f"{field} is required"}, status=status.HTTP_400_BAD_REQUEST)
         if serializer.is_valid():
             new_user = serializer.save()
-            user_dict = new_user.to_dict()
+            user_dict = User.to_dict(new_user)
             return JsonResponse(user_dict, status=status.HTTP_201_CREATED)
         else:
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

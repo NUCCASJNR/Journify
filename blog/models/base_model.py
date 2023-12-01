@@ -40,14 +40,15 @@ class BaseModel(models.Model):
 
             # Convert special types to a serializable format if needed
             if isinstance(field, models.DateTimeField):
-                field_value = field_value.isoformat()
+                field_value = field_value.isoformat() if field_value else None
             elif isinstance(field, models.UUIDField):
                 field_value = str(field_value)
+            elif isinstance(field, models.ImageField):
+                field_value = field_value.url if field_value else None
 
             model_dict[field_name] = field_value
 
         return model_dict
-
     @classmethod
     def get_all(cls) -> List["BaseModel"]:
         """
@@ -83,13 +84,13 @@ class BaseModel(models.Model):
 
         return cls.objects.filter(id__in=[uuid4(id) for id in ids])
 
-    @classmethod
-    def save(cls, **kwargs):
-        """
-        Saves the object in the database
-        """
-        obj = cls.objects.create(**kwargs)
-        return obj
+    # @classmethod
+    # def save(cls, **kwargs):
+    #     """
+    #     Saves the object in the database
+    #     """
+    #     obj = cls.objects.create(**kwargs)
+    #     return obj
 
 
     @classmethod
