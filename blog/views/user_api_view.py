@@ -23,6 +23,11 @@ class UserListView(APIView):
         users_list = [user.to_dict(user) for user in users]
         return JsonResponse(users_list, safe=False)
 
+
+class PostUserView(APIView):
+    """
+    User POST view
+    """
     def post(self, request):
         """
         POST request handler

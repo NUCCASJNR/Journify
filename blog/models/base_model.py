@@ -26,7 +26,12 @@ class BaseModel(models.Model):
     def __str__(self) -> str:
         return f"{self.__class__.__name__} {self.id}"
 
-
+    @classmethod
+    def base_save(cls):
+        """
+        Saves the object in the database
+        """
+        cls.objects.save()
 
     @classmethod
     def to_dict(cls, obj: "BaseModel") -> Dict[str, Any]:
