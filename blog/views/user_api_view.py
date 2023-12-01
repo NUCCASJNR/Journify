@@ -64,3 +64,22 @@ class GetUserWithIdView(APIView):
         except ObjectDoesNotExist:
             return JsonResponse({"error": f"User with id {str(user_id)} does not exist"},
                                 status=status.HTTP_404_NOT_FOUND)
+
+
+class DeleteUserWithIdView(APIView):
+    """
+    This view handles Deleting a user from the users table using the user_id passed t the URL
+    """
+
+    def delete(self, request, user_id):
+        """
+        Delete request handler
+        """
+        try:
+            user = User.get_by_id(user_id)
+            user.delete()
+            return JsonResponse({"status": "Success user has been successfully deleted"})
+        except ObjectDoesNotExist:
+            return JsonResponse({"error": f"User with id {str(user_id)} does not exist"},
+                                status=status.HTTP_404_NOT_FOUND)
+
