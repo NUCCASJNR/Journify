@@ -9,12 +9,14 @@ from rest_framework import status
 from blog.models.user import User
 from blog.serializers import UserSerializer
 from django.http import JsonResponse
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class UserListView(APIView):
     """
     User list view
     """
+
     def get(self, request):
         """
         GET request handler
@@ -28,6 +30,7 @@ class PostUserView(APIView):
     """
     User POST view
     """
+
     def post(self, request):
         """
         POST request handler
@@ -43,3 +46,21 @@ class PostUserView(APIView):
             return JsonResponse(user_dict, status=status.HTTP_201_CREATED)
         else:
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetUserWithIdView(APIView):
+    """
+    Retrieve a user from the users table with the id passed to the url
+    """
+
+    def get(self, request, user_id):
+        """
+        GET request handler
+        """
+        try:
+            user = User.get_by_id(user_id)
+            user_dict = User.to_dict(user)
+            return JsonResponse(user_dict)
+        except ObjectDoesNotExist:
+            return JsonResponse({"error": f"User with id {str(user_id)} does not exist"},
+                                status=status.HTTP_404_NOT_FOUND)
