@@ -5,7 +5,7 @@ User serializer for the API
 """
 
 from rest_framework import serializers
-from blog.models import User
+from blog.models.user import User
 
 
 class UserSerializer(serializers.ModelSerializer):

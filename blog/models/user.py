@@ -1,7 +1,8 @@
-from .base_model import BaseModel
+from blog.models.base_model import BaseModel
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
+from datetime import datetime
 
 """
 User model
@@ -33,4 +34,10 @@ class User(AbstractUser, BaseModel):
         """
         Overrides the save method to set the username to the email
         """
+        # self.updated_at = datetime.now()
         super().save(*args, **kwargs)
+
+    # @classmethod
+    # def up(cls, ):
+    #     cls.save()
+    #     self.updated_at = datetime.now()

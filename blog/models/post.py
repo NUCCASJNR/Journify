@@ -8,7 +8,7 @@ from .user import User
 from .category import Category
 
 
-class BlogPosts(BaseModel):
+class BlogPost(BaseModel):
     """
     Post model class
     columns:

@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'Journify.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE':'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': DATABASE,
         'USER': USER,
         'PASSWORD': PASSWORD,
@@ -122,8 +122,8 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
-
+# USE_TZ = True
+#
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

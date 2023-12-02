@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from blog.models.user import User
-from blog.serializers import UserSerializer
+from blog.serializers.user_serializer import UserSerializer
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -68,7 +68,7 @@ class GetUserWithIdView(APIView):
 
 class DeleteUserWithIdView(APIView):
     """
-    This view handles Deleting a user from the users table using the user_id passed t the URL
+    This view handles Deleting a user from the users table using the user_id passed to the URL
     """
 
     def delete(self, request, user_id):
@@ -83,3 +83,24 @@ class DeleteUserWithIdView(APIView):
             return JsonResponse({"error": f"User with id {str(user_id)} does not exist"},
                                 status=status.HTTP_404_NOT_FOUND)
 
+
+class UpdateUserWithIdView(APIView):
+    """
+    This view handles updating a user from the users table using the user_id passed to the URL
+    """
+    def put(self, request, user_id):
+        """
+        Put request handler
+        """
+        try:
+            user = User.get_by_id(user_id)
+        except ObjectDoesNotExist:
+            return JsonResponse({"error": f"User with id {str(user_id)} does not exist"},
+                                status=status.HTTP_404_NOT_FOUND)
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            updated_user = serializer.save()
+            user_dict = User.to_dict(updated_user)
+            return JsonResponse(user_dict)
+        else:
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
