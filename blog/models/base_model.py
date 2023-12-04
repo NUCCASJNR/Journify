@@ -23,8 +23,8 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-    def __str__(self) -> str:
-        return f"{self.__class__.__name__} {self.id}"
+    # def __str__(self) -> str:
+    #     return f"{self.__class__.__name__} {self.id}"
 
     @classmethod
     def base_save(cls):
@@ -54,6 +54,7 @@ class BaseModel(models.Model):
             model_dict[field_name] = field_value
 
         return model_dict
+
     @classmethod
     def get_all(cls) -> List["BaseModel"]:
         """

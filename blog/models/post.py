@@ -19,13 +19,13 @@ class BlogPost(BaseModel):
     """
     title = models.CharField(max_length=255)
     content = models.TextField()
-    sub_title = models.CharField(max_length=50)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    sub_title = models.CharField(max_length=50, blank=True)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, db_column='user_id')
     categories = models.ManyToManyField(Category, related_name='posts')
 
     class Meta:
         db_table = 'blog_posts'
 
-    def __str__(self) -> str:
-        super().__str__()
-        return f"Post {self.id} {self.title}"
+    # def __str__(self) -> str:
+    #     super().__str__()
+    #     return f"Post {self.id} {self.title}"
