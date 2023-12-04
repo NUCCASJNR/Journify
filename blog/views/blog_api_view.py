@@ -56,3 +56,11 @@ class BlogAddView(APIView):
             return JsonResponse(post_dict, status=status.HTTP_201_CREATED)
         else:
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CountAllPostViews(APIView):
+    """View for counting the number of posts"""
+    def get(self, request):
+        """Count Posts"""
+        posts = BlogPost.count()
+        return JsonResponse({"No of posts": posts}, status=status.HTTP_200_OK)

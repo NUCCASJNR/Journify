@@ -8,7 +8,8 @@ from blog.views.user_api_view import (
 )
 from blog.views.blog_api_view import (
     BlogListView,
-    BlogAddView
+    BlogAddView,
+    CountAllPostViews
 )
 
 urlpatterns = [
@@ -18,5 +19,6 @@ urlpatterns = [
     path('del_user/<uuid:user_id>/', DeleteUserWithIdView.as_view()),
     path('update_user/<uuid:user_id>/', UpdateUserWithIdView.as_view()),
     path('posts/', BlogListView.as_view()),
-    path('post/new/', BlogAddView.as_view())
+    path('post/new/', BlogAddView.as_view()),
+    path('posts_count/', CountAllPostViews.as_view())
 ]
