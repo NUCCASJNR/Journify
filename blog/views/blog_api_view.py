@@ -91,3 +91,20 @@ class ListAUserBlogPosts(APIView):
                 return JsonResponse(serialized_blogs, safe=False)
         except ValidationError:
             return JsonResponse({'error': f"user with {user_id} doesn't exist"}, status=status.HTTP_403_FORBIDDEN)
+
+
+class GetBlogPostView(APIView):
+    """Handles getting a blog post"""
+
+    def get(self, request, post_id):
+        """
+        GET request handler
+        """
+        try:
+            blog = BlogPost.get_by_id(post_id)
+            blog_dict = BlogPost.to_dict(blog)
+            blog_dict['user_id'] = UserSerializer(blog_dict['user_id']).data['id']
+            return JsonResponse(blog_dict)
+        except ValidationError:
+            return JsonResponse({"error": f"BlogPost with id {str(post_id)} does not exist"},
+                                status=status.HTTP_404_NOT_FOUND)

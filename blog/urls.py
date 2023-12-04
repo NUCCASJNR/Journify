@@ -11,7 +11,8 @@ from blog.views.blog_api_view import (
     BlogListView,
     BlogAddView,
     CountAllPostViews,
-    ListAUserBlogPosts
+    ListAUserBlogPosts,
+    GetBlogPostView
 )
 
 urlpatterns = [
@@ -24,5 +25,6 @@ urlpatterns = [
     path('post/new/', BlogAddView.as_view()),
     path('posts_count/', CountAllPostViews.as_view()),
     path('users_count/', ListTotalNumberOfUsers.as_view()),
-    path('user_blogs/<str:user_id>/', ListAUserBlogPosts.as_view())
+    path('user_blogs/<str:user_id>/', ListAUserBlogPosts.as_view()),
+    path('post/<uuid:post_id>/', GetBlogPostView.as_view()),
 ]
