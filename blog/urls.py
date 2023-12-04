@@ -4,7 +4,8 @@ from blog.views.user_api_view import (
     GetUserWithIdView,
     PostUserView,
     DeleteUserWithIdView,
-    UpdateUserWithIdView
+    UpdateUserWithIdView,
+    ListTotalNumberOfUsers
 )
 from blog.views.blog_api_view import (
     BlogListView,
@@ -20,5 +21,6 @@ urlpatterns = [
     path('update_user/<uuid:user_id>/', UpdateUserWithIdView.as_view()),
     path('posts/', BlogListView.as_view()),
     path('post/new/', BlogAddView.as_view()),
-    path('posts_count/', CountAllPostViews.as_view())
+    path('posts_count/', CountAllPostViews.as_view()),
+    path('users_count/', ListTotalNumberOfUsers.as_view())
 ]

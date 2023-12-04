@@ -104,3 +104,13 @@ class UpdateUserWithIdView(APIView):
             return JsonResponse(user_dict)
         else:
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ListTotalNumberOfUsers(APIView):
+    """This view handles listing the total number of users"""
+    def get(self, request):
+        """
+        List the total number of users
+        """
+        users = User.count()
+        return JsonResponse({"No of users": users})
