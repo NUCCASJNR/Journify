@@ -111,27 +111,31 @@ class GetBlogPostView(APIView):
                                 status=status.HTTP_404_NOT_FOUND)
 
 
-class GetAUserBlogPostView(APIView):
-    """
-    Handles getting a user's precise blog post
-    """
-    def get(self, request, post_id, user_id):
+
+class GetOneBlogPostOfAUserView(APIView):
+    """Handles getting a blog post of a user"""
+
+    def get(self, request, user_id, post_id):
         """
-        Get Request Handler
+        GET request handler
         """
         try:
             user = User.get_by_id(user_id)
             if user:
-                blog = BlogPost.get_by_id(post_id)
-                if blog:
-                    if str(BlogPost.to_dict(blog)['user_id']) != str(user.id):
-                        raise PermissionError(f"Blog Post with id: {post_id} doesn't belong to user with "
-                                              f"id {user_id}")
-                    blog_dict = BlogPost.to_dict(blog)
-                    blog_dict['user_id'] = UserSerializer(blog_dict['user_id']).data['id']
-                    return JsonResponse(blog_dict, status=status.HTTP_200_OK)
-                else:
-                    raise ObjectDoesNotExist(f"Blog Post with id: {post_id} doesn't exist")
+                try:
+                    blog = BlogPost.get_by_id(post_id)
+                    if blog:
+                        if str(BlogPost.to_dict(blog)['user_id']) != str(User.get_by_id(user.id)):
+                            raise PermissionError(f"Blog Post with id: {post_id} doesn't belong to user with "
+                                                  f"id {user_id}")
+                        blog_dict = BlogPost.to_dict(blog)
+                        blog_dict['user_id'] = UserSerializer(blog_dict['user_id']).data['id']
+                        return JsonResponse(blog_dict, status=status.HTTP_200_OK)
+                except ValidationError:
+                    return JsonResponse({"error": f"BlogPost with id {str(post_id)} does not exist"},
+                                        status=status.HTTP_404_NOT_FOUND)
+                # else:
+                #     raise ObjectDoesNotExist(f"Blog Post with id: {post_id} doesn't exist")
             else:
                 raise PermissionError(f"User with id: {user_id} doesn't exist")
         except ValidationError:
