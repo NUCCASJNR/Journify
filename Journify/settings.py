@@ -34,7 +34,7 @@ SECRET_KEY = 'django-insecure-y&!j$$pymqp#v)q_qgdk_tw%*c=52hv6l3216$^vd$$umg95t-
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+APPEND_SLASH = False
 
 # Application definition
 
