@@ -9,6 +9,7 @@ from blog.models.post import BlogPost, User
 from blog.serializers.blog_serializer import BlogSerializer
 from django.http import JsonResponse
 from blog.serializers.user_serializer import UserSerializer
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 
 class BlogListView(APIView):
@@ -44,16 +45,21 @@ class BlogAddView(APIView):
                 return JsonResponse({"error": f"{field} is required"}, status=status.HTTP_400_BAD_REQUEST)
         if serializer.is_valid():
             new_post = BlogPost.custom_save(**serializer.validated_data)
+            u_id = new_post['user_id']
+            try:
+                user = User.get_by_id(u_id)
+                if user:
+                    user_serializer = UserSerializer(u_id)
+                    serialized_user = user_serializer.data
 
-            # Serialize the User object in the response
-            user_serializer = UserSerializer(new_post.user_id)
-            serialized_user = user_serializer.data
-
-            # Include the serialized User object in the response
-            post_dict = new_post.to_dict(new_post)
-            post_dict['user_id'] = serialized_user
-
-            return JsonResponse(post_dict, status=status.HTTP_201_CREATED)
+                    # Include the serialized User object in the response
+                    post_dict = new_post.to_dict(new_post)
+                    post_dict['user_id'] = serialized_user
+                    return JsonResponse(post_dict, status=status.HTTP_201_CREATED)
+            except ValidationError as e:
+                return JsonResponse({"error": f"Invalid UUID: {e}"}, status=status.HTTP_400_BAD_REQUEST)
+            except ObjectDoesNotExist:
+                return JsonResponse({'error': f"user with {u_id} doesn't exist"}, status=status.HTTP_403_FORBIDDEN)
         else:
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
