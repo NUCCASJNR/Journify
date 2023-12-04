@@ -114,7 +114,7 @@ class BaseModel(models.Model):
         """
 
         try:
-            return cls.objects.get(**kwargs)
+            return cls.objects.filter(**kwargs)
         except cls.DoesNotExist:
             return None
 

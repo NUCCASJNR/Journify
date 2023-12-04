@@ -66,7 +66,28 @@ class BlogAddView(APIView):
 
 class CountAllPostViews(APIView):
     """View for counting the number of posts"""
+
     def get(self, request):
         """Count Posts"""
         posts = BlogPost.count()
         return JsonResponse({"No of posts": posts}, status=status.HTTP_200_OK)
+
+
+class ListAUserBlogPosts(APIView):
+    """Handles listing a user's blog posts"""
+
+    def get(self, request, user_id):
+        """
+        List all the blogposts of a user
+        """
+        try:
+            user = User.get_by_id(user_id)
+            if user:
+                blogs = BlogPost.find_obj_by(**{'user_id': user_id})
+                blog_serializer = BlogSerializer(blogs, many=True)
+                serialized_blogs = blog_serializer.data
+                if not serialized_blogs:
+                    return JsonResponse({"status": f"User with id: {user_id} doesn't have any blog posts yet"})
+                return JsonResponse(serialized_blogs, safe=False)
+        except ValidationError:
+            return JsonResponse({'error': f"user with {user_id} doesn't exist"}, status=status.HTTP_403_FORBIDDEN)
