@@ -13,7 +13,8 @@ from blog.views.blog_api_view import (
     CountAllPostViews,
     ListAUserBlogPosts,
     GetBlogPostView,
-    GetOneBlogPostOfAUserView
+    GetOneBlogPostOfAUserView,
+    DeleteBlogPostsView
 )
 
 urlpatterns = [
@@ -28,5 +29,6 @@ urlpatterns = [
     path('users_count/', ListTotalNumberOfUsers.as_view()),
     path('user_blogs/<str:user_id>/', ListAUserBlogPosts.as_view()),
     path('post/<uuid:post_id>/', GetBlogPostView.as_view()),
-    path('user/<str:user_id>/singlepost/<str:post_id>/', GetOneBlogPostOfAUserView.as_view())
+    path('user/<str:user_id>/singlepost/<str:post_id>/', GetOneBlogPostOfAUserView.as_view()),
+    path('del_post/<uuid:user_id>/', DeleteBlogPostsView.as_view()),
 ]

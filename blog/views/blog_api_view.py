@@ -111,7 +111,6 @@ class GetBlogPostView(APIView):
                                 status=status.HTTP_404_NOT_FOUND)
 
 
-
 class GetOneBlogPostOfAUserView(APIView):
     """Handles getting a blog post of a user"""
 
@@ -138,6 +137,35 @@ class GetOneBlogPostOfAUserView(APIView):
                 #     raise ObjectDoesNotExist(f"Blog Post with id: {post_id} doesn't exist")
             else:
                 raise PermissionError(f"User with id: {user_id} doesn't exist")
+        except ValidationError:
+            return JsonResponse({"error": f"User with id {user_id} does not exist"},
+                                status=status.HTTP_404_NOT_FOUND)
+
+
+class DeleteBlogPostsView(APIView):
+    """Handles deleting all the blog posts associated with a user"""
+
+    def delete(self, request, user_id):
+        """
+        DELETE request handler
+        """
+        try:
+            user = User.get_by_id(user_id)
+            if user:
+                try:
+                    blogs = BlogPost.find_obj_by(**{'user_id': user_id})
+                    print(blogs)
+                    if blogs:
+                        for blog in blogs:
+                            blog.delete()
+                        return JsonResponse({"status": f"All blog posts of user with id: {user_id} deleted"},
+                                            status=status.HTTP_200_OK)
+                    else:
+                        raise ObjectDoesNotExist(f"User with id: {user_id} doesn't have any blog posts")
+                except ValidationError:
+                    return JsonResponse({"error": "No blogs"}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                raise ValueError(f"User with id: {user_id} doesn't exist")
         except ValidationError:
             return JsonResponse({"error": f"User with id {user_id} does not exist"},
                                 status=status.HTTP_404_NOT_FOUND)
