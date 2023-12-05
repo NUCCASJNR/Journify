@@ -45,16 +45,16 @@ class BlogAddView(APIView):
                 return JsonResponse({"error": f"{field} is required"}, status=status.HTTP_400_BAD_REQUEST)
         if serializer.is_valid():
             new_post = BlogPost.custom_save(**serializer.validated_data)
-            u_id = new_post['user_id']
+            # print("data:", new_post)
+            u_id = new_post.user_id
+            u_id = User.to_dict(u_id)['id']
             try:
                 user = User.get_by_id(u_id)
+                print(user)
                 if user:
-                    user_serializer = UserSerializer(u_id)
-                    serialized_user = user_serializer.data
-
                     # Include the serialized User object in the response
                     post_dict = new_post.to_dict(new_post)
-                    post_dict['user_id'] = serialized_user
+                    post_dict['user_id'] = u_id
                     return JsonResponse(post_dict, status=status.HTTP_201_CREATED)
             except ValidationError as e:
                 return JsonResponse({"error": f"Invalid UUID: {e}"}, status=status.HTTP_400_BAD_REQUEST)
