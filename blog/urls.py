@@ -16,7 +16,7 @@ from blog.views.blog_api_view import (
     GetOneBlogPostOfAUserView,
     DeleteBlogPostsView
 )
-from blog.views.signup import home
+from blog.views.signup import home, signup
 
 urlpatterns = [
     path('users/', UserListView.as_view()),
@@ -33,4 +33,5 @@ urlpatterns = [
     path('user/<str:user_id>/singlepost/<str:post_id>/', GetOneBlogPostOfAUserView.as_view()),
     path('del_post/<uuid:user_id>/', DeleteBlogPostsView.as_view()),
     path('', home, name='home'),
+    path('auth/signup', signup, name='signup'),
 ]

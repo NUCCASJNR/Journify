@@ -36,6 +36,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 APPEND_SLASH = False
 
+AUTH_USER_MODEL = 'blog.User'
 # Application definition
 
 INSTALLED_APPS = [

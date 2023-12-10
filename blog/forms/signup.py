@@ -1,15 +1,23 @@
-from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from blog.models.user import User
+from django import forms
 
-class SignupForm(forms.Form):
+
+class SignupForm(UserCreationForm):
     """
     Signup Form
     """
     username = forms.CharField(max_length=255)
     email = forms.EmailField(max_length=255)
     password = forms.CharField(max_length=255, widget=forms.PasswordInput)
+    first_name = forms.CharField(max_length=50)
+    last_name = forms.CharField(max_length=50)
     confirm_password = forms.CharField(max_length=255, widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'username', 'email', 'password', 'confirm_password')
 
     def clean_email(self):
         """

@@ -13,12 +13,12 @@ class User(AbstractUser, BaseModel):
     """
     User model class
     """
-    username = models.CharField(max_length=50, unique=True)
-    email = models.EmailField(max_length=50, unique=True)
-    password = models.CharField(max_length=50)
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
+    username = models.CharField(max_length=50, unique=True, blank=False)
+    email = models.CharField(max_length=50, unique=True, blank=False)
+    first_name = models.CharField(max_length=50, blank=False)
+    last_name = models.CharField(max_length=50, blank=False)
     bio = models.TextField(max_length=500, blank=True)
+    password = models.CharField(max_length=50)
     profile_picture = models.ImageField(upload_to='profile_pictures', blank=True)
 
     # Add related_name to resolve clashes with auth.User.groups
@@ -30,12 +30,12 @@ class User(AbstractUser, BaseModel):
     class Meta:
         db_table = 'users'
 
-    def save(self, *args, **kwargs):
-        """
-        Overrides the save method to set the username to the email
-        """
-        # self.updated_at = datetime.now()
-        super().save(*args, **kwargs)
+    # def save(self, **kwargs):
+    #     """
+    #     Overrides the save method to set the username to the email
+    #     """
+    #     # self.updated_at = datetime.now()
+    #     super().save(*args, **kwargs)
 
     # @classmethod
     # def up(cls, ):
