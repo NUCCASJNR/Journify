@@ -30,12 +30,12 @@ class User(AbstractUser, BaseModel):
     class Meta:
         db_table = 'users'
 
-    # def save(self, **kwargs):
-    #     """
-    #     Overrides the save method to set the username to the email
-    #     """
-    #     # self.updated_at = datetime.now()
-    #     super().save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        """
+        Overrides the save method to set the username to the email
+        """
+        # self.updated_at = datetime.now()
+        super().save(*args, **kwargs)
 
     # @classmethod
     # def up(cls, ):
