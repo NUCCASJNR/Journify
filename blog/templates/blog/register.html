@@ -10,29 +10,38 @@
 	
 </head>
 <body>
+    {% if messages %}
+		<div class="messages">
+		{% for message in messages %}
+			<div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>
+				{{ message }}
+			</div>
+		{% endfor %}
+		</div>
+	{% endif %}
 	<div class="infinity-container">
 		<!-- Company Logo -->
 		<div class="logo">
 			<img src="../../static/blog/assets/img/n_logo.png" width="150px">
             
 		</div>
-		<!-- FORM CONTAINER BEGIN -->
+        <!-- FORM CONTAINER BEGIN -->
 		<div class="infinity-form-block">
 			<div class="infinity-click-box text-center">Create an account</div>
 			
 			<div class="infinity-fold">
 				<div class="infinity-form">
-					<form method="post" action="{% url 'signup' %}">
+					<form method="post">
                          {% csrf_token %}
 {#                         {% form.as_p %}#}
 						<!-- Input Box -->
 						<div class="form-input">
 							<span><i class="fa fa-user"></i></span>
-							<input type="text" name="firstname" placeholder="First Name" tabindex="10"required>
+							<input type="text" name="first_name" placeholder="First Name" tabindex="10"required>
 						</div>
                         <div class="form-input">
 							<span><i class="fa fa-user"></i></span>
-							<input type="text" name="lastname" placeholder="Last Name" tabindex="10"required>
+							<input type="text" name="last_name" placeholder="Last Name" tabindex="10"required>
 						</div>
 						<div class="form-input">
 							<span><i class="fa fa-envelope"></i></span>
@@ -44,11 +53,11 @@
 						</div>
                         <div class="form-input">
 							<span><i class="fa fa-lock"></i></span>
-							<input type="password" name="" placeholder="Password" required>
+							<input type="password" name="password1" placeholder="Password" required>
 						</div>
 						<div class="form-input">
 							<span><i class="fa fa-lock"></i></span>
-							<input type="password" name="" placeholder="Confirm Password" required>
+							<input type="password" name="password2" placeholder="Confirm Password" required>
 						</div>
 						<!-- Register Button -->
 						<div class="col-12 px-0 text-right">

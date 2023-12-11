@@ -1,23 +1,20 @@
 from django.contrib.auth.forms import UserCreationForm
+from django import forms
 from django.core.exceptions import ValidationError
 from blog.models.user import User
-from django import forms
 
 
 class SignupForm(UserCreationForm):
     """
     Signup Form
     """
-    username = forms.CharField(max_length=255)
     email = forms.EmailField(max_length=255)
-    password = forms.CharField(max_length=255, widget=forms.PasswordInput)
     first_name = forms.CharField(max_length=50)
     last_name = forms.CharField(max_length=50)
-    confirm_password = forms.CharField(max_length=255, widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'email', 'password', 'confirm_password')
+        fields = ('first_name', 'last_name', 'username', 'email', 'password1', 'password2')
 
     def clean_email(self):
         """
@@ -32,7 +29,7 @@ class SignupForm(UserCreationForm):
             raise forms.ValidationError(e)
 
         return email
-    
+
     def clean_username(self):
         """
         Validates username
@@ -46,15 +43,3 @@ class SignupForm(UserCreationForm):
             raise forms.ValidationError(e)
 
         return username
-
-    def clean(self):
-        """
-        Validates password match
-        """
-        cleaned_data = super().clean()
-        password = cleaned_data.get('password')
-        confirm_password = cleaned_data.get('confirm_password')
-
-        if password and confirm_password and password != confirm_password:
-            raise forms.ValidationError("Passwords do not match")
-        return cleaned_data
