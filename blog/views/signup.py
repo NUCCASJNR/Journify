@@ -7,6 +7,7 @@ from blog.forms.signup import SignupForm
 from django.contrib.auth import login as login_user
 from django.contrib import messages
 from blog.models.user import User
+from .login import dashboard
 
 # Configure logging to write to a file
 logging.basicConfig(
@@ -59,7 +60,7 @@ def signup(request):
             logging.info(f"User {user.username} created and logged in successfully")
 
             # You can redirect the user to another page or log them in, etc.
-            return redirect('home')
+            return redirect(dashboard)
         else:
             print(form.errors)
     else:

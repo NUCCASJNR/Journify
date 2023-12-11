@@ -17,7 +17,7 @@ from blog.views.blog_api_view import (
     DeleteBlogPostsView
 )
 from blog.views.signup import home, signup
-
+from blog.views.login import login, dashboard
 urlpatterns = [
     path('users/', UserListView.as_view()),
     path('user/new/', PostUserView.as_view()),
@@ -34,4 +34,6 @@ urlpatterns = [
     path('del_post/<uuid:user_id>/', DeleteBlogPostsView.as_view()),
     path('', home, name='home'),
     path('auth/signup', signup, name='signup'),
+    path('auth/login', login, name='login'),
+    path('dashboard/', dashboard, name='dashboard')
 ]

@@ -22,9 +22,12 @@ class LoginForm(forms.Form):
     def validate_details(self, username: str, password: str):
         """Validate username"""
         try:
-            query = {'username': username, 'password': password}
-            user = User.find_obj_by(**{query})
-            if user:
-                return user
+            if '@' not in username:
+                query = {'username': username, 'password': password}
+                user = User.find_obj_by(**{query})
+                if user:
+                    return user
+            else:
+                query = {'email': username, 'password': password}
         except forms.ValidationError:
             return "Invalid username or password"
