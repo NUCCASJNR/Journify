@@ -74,6 +74,8 @@ class BaseModel(models.Model):
         except cls.DoesNotExist:
             return None
 
+
+
     @classmethod
     def get_by_ids(cls, ids: List[Union[str, uuid4]]) -> List["BaseModel"]:
         """
