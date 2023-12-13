@@ -49,6 +49,9 @@ INSTALLED_APPS = [
     'blog'
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'blog.views.auth.EmailOrUsernameModelBackend',
+]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

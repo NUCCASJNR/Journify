@@ -6,6 +6,7 @@ from django import forms
 from blog.models.user import User
 from django.contrib.auth.hashers import check_password
 
+
 class LoginForm(forms.Form):
     """Login form
     params:

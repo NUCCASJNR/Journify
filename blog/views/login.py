@@ -19,15 +19,6 @@ def login(request):
             try:
                 username = form.cleaned_data['username']
                 password = form.cleaned_data['password']
-                # print(username)
-                # if '@' in username:
-                #     user = authenticate_by_email(username, password)
-                #     print(user)
-                #     if user:
-                #         auth_login(request, user)
-                #         messages.success(request, f'Hi {username.title()}, welcome back!')
-                #         return redirect('dashboard')
-                # else:
                 user = authenticate(username=username, password=password)
                 if user is not None:
                     auth_login(request, user)
